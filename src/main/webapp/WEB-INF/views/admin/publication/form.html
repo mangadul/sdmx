@@ -1,0 +1,45 @@
+<th:block th:insert="app::main(_, ~{::script})">
+<content>
+    <form method="post"
+      enctype="multipart/form-data"
+      class="form-horizontal"
+      th:action="'?'+${_csrf.parameterName}+'='+${_csrf.token}"
+      th:object="${model}">
+        <!--<input th:replace="form::csrf" />-->
+
+        <th:block th:insert="form::group('text', 'title')" />
+        <th:block th:insert="form::group('select', 'categories')"
+          th:with="multiple=true,
+            options=${categoryOpt},
+            value=${categorySelOpt==null ? _ : categorySelOpt}" />
+        <th:block th:insert="form::group('textarea', 'description')" th:with="class=' rte'" />
+        <!--th:with="value=_,-->
+        <th:block th:insert="form::group('file', 'cover')"
+          th:with="value=${model.isCoverExists() ? model.getCoverUrl() : ''},
+            allowedExt='jpg,gif,png',
+            deleteUrl=@{/admin/publication/delete-file/__${model.id}__}" />
+        <th:block th:insert="form::group('file', 'attachments')"
+          th:with="multiple=true,
+            allowedExt='pdf',
+            deleteUrl=@{/admin/publication/delete-file/__${model.id}__},
+            value=${model.getFilesUrl()}" />
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-7">
+                <button class="btn btn-primary">[[ #{action.save} ]]</button>
+            </div>
+        </div>
+    </form>
+</content>
+
+<script type="text/javascript" th:src="@{/resources/js/lib/syncfusion/ej.richtextboxeditor.min.js}"></script>
+<script type="text/javascript">
+    $(function() {
+        $(".rte").ejRTE({
+            width: "100%",
+            minWidth: "150px",
+            isResponsive: true,
+        });
+    });
+</script>
+</th:block>

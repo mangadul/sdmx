@@ -1,0 +1,37 @@
+<div class="row ml-none mb-md">
+  <!-- Chart Type -->
+  <div class="pull-left mr-md">
+    <label class="pull-left pr-md">Chart Type</label>
+    <div class="pull-left">
+      <input type="text" id="chartType" />
+    </div>
+  </div>
+
+  <div class="pull-left mr-md">
+    <div class="btn-group">
+      <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-download"></i> Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a href="#" data-export="xls">
+            <i class="fa fa-file-excel-o text-success"></i> Excel
+          </a>
+        </li>
+        <li>
+          <a href="#" data-export="pdf">
+            <i class="fa fa-file-pdf-o text-danger"></i> PDF
+          </a>
+        </li>
+        <li>
+          <a href="#" data-export="png">
+            <i class="fa fa-object-group text-muted"></i> Image
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="PivotChart" style="min-height: 275px; height: 460px; width: 100%;"></div>

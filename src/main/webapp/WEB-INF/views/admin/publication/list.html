@@ -1,0 +1,40 @@
+<th:block th:insert="app::main(_, _)" th:with="title='Publications'">
+  <content>
+    <a th:href="@{/admin/publication/create}" class="btn btn-primary">
+      <i class="fa fa-plus"></i> [[ #{action.create} ]]
+    </a>
+    <hr>
+
+    <table class="table table-hover table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Date Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="item : ${data}">
+          <td>[[ ${item.title} ]]</td>
+          <td>[[ ${T(org.jsoup.Jsoup).parse(item.shortDescription).text()} ]]</td>
+          <td width="100px">[[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]</td>
+          <td>
+            <a th:href="@{'/publication/' + ${item.id}}" class="btn btn-info btn-sm">
+              <i class="fa fa-eye"></i>
+            </a>
+            <a th:href="@{'/admin/publication/edit/' + ${item.id}}" class="btn btn-warning btn-sm">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a th:href="@{'/admin/publication/delete/' + ${item.id}}"
+              th:attr="confirm=#{confirm.delete}"
+              method="POST"
+              class="btn btn-danger btn-sm">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </content>
+</th:block>

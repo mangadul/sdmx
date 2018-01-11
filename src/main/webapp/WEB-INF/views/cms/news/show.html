@@ -1,0 +1,33 @@
+<!--<th:block th:insert="app::main(_, ~{::script})" th:with="title='Publications'">-->
+<th:block th:insert="app::main(_, _)" th:with="title=${model.title}, header=false">
+  <div th:fragment="content" class="pr-sm pl-sm">
+    <h1 class="mt-none">[[ ${model.title} ]]</h1>
+    <hr class="row mt-sm mb-xs">
+
+    <div class="row text-sm mb-md">
+      <div class="col-xs-6">
+        <span class="text-muted">[[ #{label.article.author} ]]: [[ ${model.account?.email} ]]</span>
+      </div>
+      <div class="col-xs-6 text-right">
+        <span class="text-muted pr-md">
+          [[ #{label.article.created} ]]: [[ ${#dates.format(model.created, 'dd MMM yyyy')} ]]
+        </span>
+        <span class="text-muted pr-md">
+          [[ #{label.article.updated} ]]: [[ ${#dates.format(model.updated, 'dd MMM yyyy')} ]]
+        </span>
+      </div>
+    </div>
+
+    <div class="row mt-lg mb-md">
+      <div class="pull-right col-md-4 col-sm-4">
+        <div class="thumbnail" th:each="imageUrl : ${images}">
+          <img th:src="@{${imageUrl}}" />
+        </div>
+      </div>
+
+      <div class="text-md col-md-8 col-sm-8">
+        <th:block th:utext="${model.content}" />
+      </div>
+    </div>
+  </div>
+</th:block>

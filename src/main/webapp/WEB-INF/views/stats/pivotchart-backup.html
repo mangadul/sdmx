@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-xs-3">
+    <label for="chart-type">Chart Type</label>
+    <th:block th:replace="form::select(id='chart-type', options=${chartTypes})" />
+  </div>
+</div>
+<hr>
+
+<div id="PivotChart" style="min-height: 275px; height: 460px;"></div>

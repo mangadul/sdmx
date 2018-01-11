@@ -1,0 +1,114 @@
+<th:block th:insert="app::main(~{::style}, ~{::script})"
+  th:with="title=${title}, rightBar=~{::#meta-data}, header_btn=~{::#header-btn}, panel=false">
+  <div id="header-btn">
+    <a id="chat-link" title="Meta Data" href="#">
+      <i class="icon fa fa-info-circle"></i>
+    </a>
+  </div>
+
+  <table class="table table-bordered table-hover" id="meta-data">
+    <tr th:each="item : ${dataFlow.getMetaAsJson().fields()}">
+      <th>[[ ${item.getKey()} ]]</th>
+      <td>[[ ${item.getValue().textValue()} ]]</td>
+    </tr>
+  </table>
+
+  <content>
+    <div class="tabbable">
+      <ul class="nav nav-tabs" id="myTab">
+        <li class="tab-red active">
+          <a data-toggle="tab" href="#pivot">
+            <i class="fa fa-list-alt"></i> Data
+          </a>
+        </li>
+        <li class="tab-red">
+          <a data-toggle="tab" href="#chart">
+            <i class="fa fa-bar-chart"></i> Chart
+          </a>
+        </li>
+        <li class="tab-red">
+          <a data-toggle="tab" href="#map">
+            <i class="fa fa-map"></i> Map
+          </a>
+        </li>
+        <li class="tab-red">
+          <a data-toggle="tab" href="#link">
+            <i class="fa fa-link"></i> Link
+          </a>
+        </li>
+        <li class="tab-red">
+          <a data-toggle="tab" href="#export">
+            <i class="fa fa-download"></i> Export
+          </a>
+        </li>
+        <li class="tab-red">
+          <a data-toggle="tab" href="#my-query">
+            <i class="fa fa-user"></i> My Query
+          </a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="pivot" class="tab-pane active table-responsive" th:insert="stats/data"></div>
+        <div id="chart" class="tab-pane" th:insert="stats/pivotchart"></div>
+        <div id="map" class="tab-pane" th:insert="stats/map"></div>
+        <div id="link" class="tab-pane" th:insert="stats/link"></div>
+        <div id="export" class="tab-pane" th:insert="stats/export"></div>
+        <div id="my-query" class="tab-pane" th:insert="stats/my-query"></div>
+      </div>
+    </div>
+  </content>
+
+  <script type="text/javascript" th:src="@{/resources/js/lib/syncfusion/ej.widget.pivot.min.js}"></script>
+  <script type="text/javascript" th:src="@{/resources/js/lib/syncfusion/ej.radiobutton.min.js}"> </script>
+  <script type="text/javascript" th:src="@{/resources/js/lib/syncfusion/properties.js}"> </script>
+
+  <script type="text/javascript">
+    var lib = {data : []};
+
+    $(document).ready(function() {
+      $.ajax({
+        url: fn.url("stats/data/"+ [[ ${dataFlow.id} ]]),
+        dataType: "json",
+        success: function(resData) {
+          lib.data = resData;
+          lib.grid.init();
+          lib.chart.init();
+
+          $("[data-toggle='tab']").on("shown.bs.tab", function() {
+            var id = $(this).attr("href").substring(1);
+
+            if (!_.isUndefined(lib[id])) {
+              lib[id].reload();
+            }
+          })
+        },
+      })
+    });
+  </script>
+  <script type="text/javascript" th:src="@{/resources/js/stats/pivot-grid.js}"></script>
+  <script type="text/javascript" th:src="@{/resources/js/stats/pivot-chart.js}"></script>
+
+  <style type="text/css">
+    /*.samplecontent {
+      padding: 4px;
+    }
+    .radioBtnLabel, .chkBoxLabel {
+      margin-left: 5px !important;
+    }
+    .row .cols-prop-area {
+      min-height: 350px;
+      float: right;
+    }
+    .move {
+      padding-left: 2px;
+    }
+    .button-hit {
+      border: 1px solid #357cd2 !important;
+    }
+    .monthButton, .e-datepicker {
+      font-size: 12px !important;
+      padding-top:2px;
+    }*/
+  </style>
+</th:block>

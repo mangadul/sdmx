@@ -1,0 +1,15 @@
+@extends("app")
+
+@section("content")
+<div class="panel panel-featured panel-featured-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">@yield("title")</h3>
+	</div>
+	
+	@section("content-ajax")
+		<div class="panel-body">
+			@yield("body")
+		</div>
+	@show
+</div>
+@endsection

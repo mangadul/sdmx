@@ -1,0 +1,40 @@
+<th:block th:insert="app::main(_, _)" th:with="title=#{label.news}">
+  <content>
+    <a th:href="@{/admin/news/create}" class="btn btn-primary">
+      <i class="fa fa-plus"></i> [[ #{action.create} ]]
+    </a>
+    <hr>
+
+    <table class="table table-hover table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Content</th>
+          <th>Date Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="item : ${data}">
+          <td>[[ ${item.title} ]]</td>
+          <td>[[ ${T(org.jsoup.Jsoup).parse(item.shortContent).text()} ]]</td>
+          <td width="100px">[[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]</td>
+          <td>
+            <a th:href="@{'/news/' + ${item.id}}" class="btn btn-info btn-sm">
+              <i class="fa fa-eye"></i>
+            </a>
+            <a th:href="@{'/admin/news/edit/' + ${item.id}}" class="btn btn-warning btn-sm">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a th:href="@{'/admin/news/delete/' + ${item.id}}"
+              th:attr="confirm=#{confirm.delete}"
+              method="POST"
+              class="btn btn-danger btn-sm">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </content>
+</th:block>

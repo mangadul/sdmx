@@ -1,0 +1,72 @@
+<div th:replace="layout">
+<app-content>
+    <th:block th:if="${#fields.hasErrors('${signupForm.*}')}">
+        <div th:replace="fragments/component::alert('danger', 'Form contains errors. Please try again.')" />
+    </th:block>
+
+    <div class="panel mt-xlg panel-default col-md-4 col-md-offset-4">
+        <div class="panel-body p-xlg">
+            <div class="row">
+                <h3 class="page-header mb-xl pt-xs">Please Sign Up</h3>
+            </div>
+
+            <form class="form-horizontal"
+              method="POST"
+              th:action="@{/signup}"
+              th:object="${signupForm}"
+              th:fragment="signupForm">
+                <div class="form-group mb-lg" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control input-lg" id="name" th:field="*{name}" />
+                </div>
+
+                <div class="form-group mb-lg" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control input-lg" id="email" th:field="*{email}" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group col-xs-12 {{ $errors->has('password') ? 'has-error' : '' }}">
+                            <label for="password">Password</label>
+                            <input name="password"
+                              id="password"
+                              type="password"
+                              class="form-control input-lg"
+                              th:field="*{password}" />
+                            <span class="help-block"
+                              th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}">
+                                Incorrect password
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group pull-right{{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input id="confirm-password"
+                              name="password_confirmation"
+                              type="password"
+                              class="form-control input-lg" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <hr>
+                    <div class="col-md-8">
+                        <p class="mt-sm mb-none">
+                            Already have an account?
+                            <a href="signin" th:href="@{/signin}"><b>Sign In</b></a>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-right pr-none">
+                        <button type="submit" class="btn btn-lg btn-primary">Sign Up</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</app-content>
+</div>

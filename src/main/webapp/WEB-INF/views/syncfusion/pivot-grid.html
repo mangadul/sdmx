@@ -1,0 +1,50 @@
+<th:block th:insert="app::main(~{::style}, ~{::script})">
+  <content>
+    <div class="content-container-fluid">
+      <div class="row">
+        <div class="cols-sample-area" style="width:70%; float:left">
+          <div class="control">
+            <div id="PivotGrid" style="height: 350px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </content>
+
+  <script type="text/javascript">
+    $(function () {
+      $("#PivotGrid").ejPivotGrid({
+        dataSource: {
+          data: pivot_dataset,
+          rows: [{ fieldName: "State", fieldCaption: "State" }],
+          columns: [{ fieldName: "Country", fieldCaption: "Country" }],
+          values: [
+            { fieldName: "Amount", fieldCaption: "Amount" },
+            { fieldName: "Quantity", fieldCaption: "Quantity" },
+          ],
+          filters: [],
+          catalog: "Adventure Works DW 2008 SE",
+          cube: "",
+        },
+        frozenHeaderSettings: { enableFrozenHeaders: true},
+        enableToolTip: false,
+        enableGroupingBar: true,
+      });
+    });
+  </script>
+
+  <style type="text/css">
+    .samplecontent {
+      padding: 4px;
+    }
+
+    .radioBtnLabel, .chkBoxLabel {
+      margin-left: 5px !important;
+    }
+
+    .row .cols-prop-area {
+      min-height: 140px;
+      float: right;
+    }
+  </style>
+</th:block>

@@ -1,0 +1,38 @@
+<th:block th:insert="app::main(_, _)" th:with="title='Permission Configuration'">
+  <form th:fragment="content" method="post">
+    <input th:replace="form::csrf" />
+
+    <button type="submit" class="btn btn-success">
+      <i class="fa fa-check"></i> [[ #{action.save} ]]
+    </button>
+    <hr>
+
+    <table class="table table-hover table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Permission Name</th>
+          <th th:each="item : ${roles}">[[ ${item.name} ]]</th>
+        </tr>
+      </thead>
+      <tbody>
+        <th:block th:each="feature : ${permissions}">
+          <tr>
+            <th th:colspan="${roles.size() + 1}">
+              [[ ${#strings.capitalizeWords(#strings.replace(feature.key, '_', ' '))} ]]
+            </th>
+          </tr>
+          <tr th:each="permission : ${feature.value}">
+            <td th:text="${permission.description}"></td>
+            <td th:each="role : ${roles}">
+              <th:block th:include="form::checkbox(
+                name='config_'+ ${role.id},
+                value=${permission.id},
+                checked=${role.hasPermission(permission)}
+              )" />
+            </td>
+          </tr>
+        </th:block>
+      </tbody>
+    </table>
+  </form>
+</th:block>

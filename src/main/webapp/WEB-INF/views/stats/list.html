@@ -1,0 +1,25 @@
+<th:block th:insert="app::main(_, _)" th:with="title=#{label.stats}">
+  <content>
+    <th:block th:insert="fragments/component::searchPanel('/stats', ${query})" />
+
+    <div class="list-group mt-xlg">
+      <div th:each="item : ${data}" class="list-group-item">
+        <div class="row">
+          <div class="col-sm-8">
+            <a th:href="@{'/stats/' + ${item.id}}">
+              <b>[[ ${item.title} ]]</b>
+            </a>
+          </div>
+
+          <div class="col-sm-4 text-right">
+            <span class="text-muted mr-md">
+              [[ #{label.article.created} ]]: [[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" th:insert="fragments/component::pagination(${page})"></div>
+  </content>
+</th:block>

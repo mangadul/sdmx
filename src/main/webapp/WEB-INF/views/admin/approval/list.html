@@ -1,0 +1,35 @@
+<th:block th:insert="app::main(_, _)" th:with="title=#{label.__${type}__}, panel=false">
+  <content>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Created</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="item : ${data}">
+            <td>[[ ${item.title} ]]</td>
+            <td>[[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]</td>
+            <td>
+              <a th:href="@{/__${type}__/__${item.id}__}"
+                class="btn btn-sm btn-info" target="_blank" tooltip="Preview">
+                <i class="fa fa-eye"></i>
+              </a>
+              <a th:href="@{/admin/approval/__${type}__/approve/__${item.id}__}"
+                class="btn btn-sm btn-success" confirm method="post" tooltip="Approve">
+                <i class="fa fa-check"></i>
+              </a>
+              <a th:href="@{/admin/approval/__${type}__/deny/__${item.id}__}"
+                class="btn btn-sm btn-danger" confirm method="post" tooltip="Deny">
+                <i class="fa fa-remove"></i>
+              </a>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </content>
+</th:block>

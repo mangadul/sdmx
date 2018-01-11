@@ -1,0 +1,130 @@
+<!-- Form Group -->
+<div th:fragment="group(type, name)" class="form-group">
+  <th:block th:insert="::formLabel"
+    th:with="
+      for=${id!=null ? id : name},
+      label=${label} ? ${label} : ${#strings.capitalizeWords(#strings.replace(name, '_', ' '))}"
+  />
+
+  <div class="col-md-7">
+    <th:block th:insert="~{::${type}} ? ~{::${type}} : ~{::text(type=${type})}"
+      th:with="
+        id=${id!=null ? id : name},
+        name=${name},
+        rules=${rules},
+        value=${value!=null} ? ${value} : (${#object}!=null ? *{__${name}__} : '')"
+    />
+  </div>
+</div>
+
+<!-- Label -->
+<label th:fragment="formLabel"
+  th:attrappend="for=${for}"
+  class="col-md-3 control-label">
+  [[ ${label} ]]
+</label>
+
+<!-- CSRF Token Input -->
+<input th:fragment="csrf" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+<!-- Text Input -->
+<!-- todo appying rules validation -->
+<input th:fragment="text"
+  th:attrappend="
+     name=${name},
+     id=${id},
+     class=${class},
+     rules=${rules},
+     value=${value},
+     type=${type} ? ${type} : 'text'"
+  class="form-control"
+/>
+
+<!-- File Input -->
+<input th:fragment="file"
+  th:attrappend="
+     name=${name},
+     id=${id},
+     class=${class},
+     rules=${rules},
+     multiple=${multiple},
+     data-allowed-ext=${allowedExt},
+     data-delete-url=${deleteUrl},
+     value=${value instanceof T(java.lang.Iterable)
+      ? T(com.google.common.base.Joiner).on(';').join(value)
+      : value}"
+  class="form-control fileinput"
+  type="file"
+/>
+
+<!-- Textarea -->
+<textarea class="form-control" th:text="${value}" th:attrappend="
+  name=${name},
+  id=${id},
+  class=${class},
+  rules=${rules}">
+</textarea>
+
+<!-- Radio Input -->
+<div th:fragment="radio" class="radio">
+  <label>
+    <input th:attrappend="
+        name=${name},
+        id=${id},
+        class=${class},
+        rules=${rules},
+        value=${value}"
+      th:checked="${checked} ? 'checked'"
+      class="form-control"
+      type="radio"
+    />
+    <span class='text'>[[ ${label} ]]</span>
+  </label>
+</div>
+
+<!-- Radios Input -->
+<th:block th:fragment="radios">
+  <th:block th:each="item : ${options}"
+    th:insert="::radio(name=${name}, class=${class})"
+    th:with="checked=${value.contains(item.key)}, value=${item.key}, label=${item.value}" />
+</th:block>
+
+<!-- Checkboxes Input -->
+<div th:fragment="checkbox" class="checkbox">
+  <label>
+    <input th:attrappend="
+        name=${name},
+        id=${id},
+        class=${class},
+        rules=${rules},
+        value=${value}"
+      th:checked="${checked} ? 'checked'"
+      class="form-control"
+      type="checkbox"
+    />
+    <span class='text'>[[ ${label} ]]</span>
+  </label>
+</div>
+
+<!-- Checkboxes Input -->
+<th:block th:fragment="checkboxes">
+  <th:block th:each="item : ${options}"
+    th:insert="::checkbox(name=${name}, class=${class})"
+    th:with="checked=${value?.contains(item.key)}, value=${item.key}, label=${item.value}" />
+</th:block>
+
+<!-- Combobox Input -->
+<select th:fragment="select" select2
+  th:attrappend="
+    name=${name},
+    id=${id},
+    class=${class},
+    data-multiple=${multiple==null ? 'false' : 'true'},
+    tags=${tags==null && multiple==null ? 'false' : 'true'},
+    value=${value},
+    rules=${rules}">
+  <option></option>
+  <option th:each="item : ${options}" th:value="${item.key}" th:selected="${value==item.key}">
+    [[ ${item.value} ]]
+  </option>
+</select>

@@ -1,0 +1,50 @@
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a data-toggle="tab" href="#excel" aria-expanded="true">Excel </a>
+    </li>
+    <li><a data-toggle="tab" href="#csv" aria-expanded="false">CSV </a></li>
+    <li><a data-toggle="tab" href="#pdf" aria-expanded="false">PDF </a></li>
+    <li><a data-toggle="tab" href="#xml" aria-expanded="false">XML </a></li>
+    <li><a data-toggle="tab" href="#sdmx-xml" aria-expanded="false">SDMX-XML </a></li>
+    <li><a data-toggle="tab" href="#sdmx-edi" aria-expanded="false">SDMX-EDI </a></li>
+    <li><a data-toggle="tab" href="#rdf" aria-expanded="false">RDF </a></li>
+    <li><a data-toggle="tab" href="#json" aria-expanded="false">JSON </a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="excel" class="tab-pane active table-responsive">
+      <a th:href="@{/stats/export/__${dataFlowId}__?t=xls}" method="post" class="btn btn-primary">
+        <i class="fa fa-cogs"></i> Export
+      </a>
+    </div>
+    <div id="csv" class="tab-pane">
+      <a th:href="@{/stats/export/__${dataFlowId}__?t=csv}" method="post" class="btn btn-primary">
+        <i class="fa fa-cogs"></i> Export
+      </a>
+    </div>
+    <div id="pdf" class="tab-pane">
+      <a th:href="@{/stats/export/__${dataFlowId}__?t=pdf}" method="post" class="btn btn-primary">
+        <i class="fa fa-cogs"></i> Export
+      </a>
+    </div>
+    <div id="xml" class="tab-pane">
+      <a th:href="@{/stats/export/__${dataFlowId}__?t=xml}" method="post" class="btn btn-primary">
+        <i class="fa fa-cogs"></i> Export
+      </a>
+    </div>
+    <div id="sdmx-xml" class="tab-pane">
+    </div>
+    <div id="sdmx-edi" class="tab-pane"></div>
+    <div id="rdf" class="tab-pane">
+      <a th:href="@{/stats/export/__${dataFlowId}__?t=rdf}" method="post" class="btn btn-primary">
+        <i class="fa fa-cogs"></i> Export
+      </a>
+    </div>
+    <div id="json" class="tab-pane">
+      <a th:href="@{/stats/export/__${dataFlowId}__?t=json}" method="post" class="btn btn-primary">
+        <i class="fa fa-cogs"></i> Export
+      </a>
+    </div>
+  </div>
+</div>

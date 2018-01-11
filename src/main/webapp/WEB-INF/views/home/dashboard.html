@@ -1,0 +1,271 @@
+<th:block th:insert="app::main(~{::style}, ~{::script})" th:with="title='Home', header=false, panel=false">
+    <content>
+        <style type="text/css">
+            .carousel, .active, #news .carousel-inner .cover, #news .carousel-inner .content {
+                height: 400px;
+                overflow: hidden;
+            }
+            #news {
+                background: #111;
+            }
+            #news .carousel-inner .cover img {
+                min-width: 100%;
+                min-height: 100%;
+            }
+            #news .carousel-inner .content {
+                color: #eee;
+                position: relative;
+            }
+            #news .carousel-inner .content h2 {
+                font-size: 36px;
+                margin-bottom: 20px;
+                color: #fff;
+                font-weight: 300 !important;
+            }
+            #news .carousel-inner .content p {
+                font-size: 24px;
+                font-weight: 100 !important;
+            }
+            #news .carousel-inner .content .read-more {
+                border-top: solid 1px #eee;
+                width: 100%;
+                padding: 15px 5px;
+                position: absolute;
+                bottom: 0px;
+                right: 0px;
+                box-shadow: 0px 0px 20px #000;
+                background: #111;
+            }
+        </style>
+
+        <th:block th:insert="fragments/component::searchPanel('/search', _)" th:with="clearBtn=false"/>
+
+        <div id="news" class="carousel slide mb-md mt-md panel" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#news"
+                  th:each="item, i : ${news}"
+                  th:data-slide-to="${i.index}">
+                </li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div th:each="item, i : ${news}" class="item row">
+                    <div class="col-sm-7 cover">
+                        <img th:src="@{${item.coverUrl}}" />
+                    </div>
+                    <div class="col-sm-5 content">
+                        <h2>[[ ${item.title} ]]</h2>
+                        <p>[[ ${item.shortContent} ]]</p>
+
+                        <div class="read-more text-left">
+                            <a th:href="@{/news/__${item.id}__}" class="btn btn-warning">Read More >></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#news" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#news" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-7">
+                <!-- Chart -->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="content-container-fluid">
+                            <div class="row">
+                                <div class="cols-sample-area">
+                                    <div id="container"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Tooltip" style="display: none;">
+                            <div id="icon">
+                                <div id="eficon"></div>
+                            </div>
+                            <div id="value">
+                                <div>
+                                    <label id="efpercentage">&nbsp;#point.y# </label>
+                                    <label id="ef">Efficiency </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-5 pl-none">
+                <!-- Publications -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-caption"><b>[[ #{label.publication} ]]</b></span>
+                    </div>
+                    <div class="widget-body publications pt-none">
+                        <a th:each="item : ${publication}" th:href="@{'/publication/' + ${item.id}}">
+                            <div class="row">
+                                <div class="col-xs-8 title">[[ ${item.title} ]]</div>
+                                <div class="col-xs-4 text-right">
+                                    <span class="text-muted text-sm">
+                                        [[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </content>
+
+    <style type="text/css">
+        .widget-body {
+            height: 300px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .publications a .row {
+            padding: 10px 0px;
+            border-bottom: solid 1px #eee;
+        }
+        .publications a .row:hover {
+            background: #fafafa;
+        }
+        .publications a .title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+            overflow: hidden;
+        }
+    </style>
+
+    <script type="text/javascript" th:src="@{/resources/js/lib/syncfusion/ej.chart.min.js}"></script>
+    <script type="text/javascript" language="javascript">
+      $(function() {
+        $(".carousel").carousel({interval: 5000});
+        $(".carousel-indicators > :first-child").addClass("active");
+        $(".carousel-inner > :first-child").addClass("active");
+        $(".carousel-inner img").each(function() {
+          var $this = $(this);
+          var img = new Image();
+
+          img.onload = function() {
+            $this.css(this.width > this.height ? "height" : "width", "100%");
+          }
+
+          img.src = $this.attr("src");
+        });
+
+        $("#container").ejChart({
+          //Initializing Primary X Axis
+          primaryXAxis: {
+            range: { min: 2005, max: 2011, interval: 1 },
+            title: { text: 'Year' },
+            valueType:'category'
+          },
+
+          //Initializing Primary Y Axis
+          primaryYAxis: {
+            labelFormat: "{value}%",
+            title: { text: 'Efficiency' },
+            range: { min: 25, max: 50, interval: 5 }
+          },
+
+          //Initializing Common Properties for all the series
+          commonSeriesOptions: {
+            type: 'line', enableAnimation: true,
+            tooltip:{ visible :true, template:'Tooltip'},
+            marker: {
+              shape: 'circle',
+              size: { height: 10, width: 10},
+              visible: true
+            },
+            border : {width: 2}
+          },
+
+          //Initializing Series
+          series: [
+            {
+              points: [
+                { x: 2005, y: 28 }, { x: 2006, y: 25 },{ x: 2007, y: 26 }, { x: 2008, y: 27 },
+                { x: 2009, y: 32 }, { x: 2010, y: 35 }, { x: 2011, y: 30 }
+              ],
+              name: 'India'
+            },
+            {
+              points: [
+                { x: 2005, y: 31 }, { x: 2006, y: 28 },{ x: 2007, y: 30 }, { x: 2008, y: 36 },
+                { x: 2009, y: 36 }, { x: 2010, y: 39 }, { x: 2011, y: 37 }
+              ],
+              name: 'Germany'
+            },
+            {
+              points: [
+                { x: 2005, y: 36 }, { x: 2006, y: 32 },{ x: 2007, y: 34 }, { x: 2008, y: 41 },
+                { x: 2009, y: 42 }, { x: 2010, y: 42 }, { x: 2011, y: 43 }
+              ],
+              name: 'England'
+            },
+            {
+              points: [
+                { x: 2005, y: 39 }, { x: 2006, y: 36 },{ x: 2007, y: 40 }, { x: 2008, y: 44 },
+                { x: 2009, y: 45 }, { x: 2010, y: 48 }, { x: 2011, y: 46 }
+              ],
+              name: 'France'
+            }
+          ],
+          isResponsive: true,
+          load: "loadTheme",
+          title: {text: 'Efficiency of oil-fired power production'},
+          size: {height: "300"},
+          legend: { visible: true}
+        });
+      });
+    </script>
+    <style class="cssStyles">
+        label{
+            margin-bottom : -25px !important ;
+            text-align :center !important;
+        }
+        .tooltipDivcontainer {
+            background-color:#E94649;
+            color: white;
+            width: 130px;
+        }
+        #Tooltip >div:first-child {
+            float: left;
+        }
+        #Tooltip #value {
+            float: right;
+            height: 50px;
+            width: 68px;
+        }
+        #Tooltip #value >div {
+            margin: 5px 5px 5px 5px;
+        }
+        #Tooltip #efpercentage {
+            font-size: 20px;
+            font-family: segoe ui;
+            padding-left: 2px;
+        }
+        #Tooltip #ef {
+            font-size: 12px;
+            font-family: segoe ui;
+        }
+        #eficon {
+            background-image: url("../content/images/chart/eficon.png");
+            height: 60px;
+            width: 60px;
+            background-repeat: no-repeat;
+        }
+    </style>
+</th:block>

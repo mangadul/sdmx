@@ -1,0 +1,70 @@
+<div th:fragment="main(styles, scripts)" th:replace="layout">
+  <th:block th:fragment="app-content">
+    <th:block th:if="${menu}">
+      <!-- Page Sidebar -->
+      <div class="page-sidebar sidebar-fixed" id="sidebar" th:if="${menu != null}">
+        <div th:replace="fragments/menu::container(${menu.collection})"></div>
+      </div>
+
+      <div id="chatbar" class="page-chatbar" th:if="${rightBar != null}">
+        <div class="chatbar-contacts" th:insert="${rightBar}"></div>
+      </div>
+
+      <!-- Page Content -->
+      <div th:class="${menu != null ? 'page-content' : ''}">
+        <th:block th:if="${title != null or header != null or header_btn != null}">
+          <th:block th:if="${header}">
+            <div class="page-header position-relative">
+              <th:block th:insert="${header}" />
+            </div>
+          </th:block>
+          <th:block th:if="${header == null}">
+            <div class="page-header position-relative">
+              <div class="header-title">
+                <h1 th:utext="${title}"></h1>
+              </div>
+
+              <th:block th:if="${header_btn != null}">
+                <div class="header-buttons" th:insert="${header_btn}"></div>
+              </th:block>
+            </div>
+          </th:block>
+        </th:block>
+
+        <th:block th:if="${messages != null}">
+          <th:block th:each="item : ${messages.messages}">
+            <th:block th:replace="fragments/component::alert(${item.type}, #{${item.message}})" />
+          </th:block>
+        </th:block>
+
+        <div class="page-body">
+          <div th:if="${panel != false}" class="panel panel-default">
+            <div class="panel-body">
+              <th:block th:insert="::content" />
+            </div>
+          </div>
+          <th:block th:if="${panel == false}" th:insert="::content" />
+        </div>
+      </div>
+    </th:block>
+
+    <th:block th:if="!${menu}">
+      <div class="page-body">
+        <div class="panel panel-default">
+          <div th:include="::content" class="panel-body"></div>
+        </div>
+      </div>
+    </th:block>
+  </th:block>
+
+  <th:block th:fragment="styles">
+    <th:block th:replace="${styles}"/>
+  </th:block>
+
+  <th:block th:fragment="scripts">
+    <th:block th:replace="${scripts}"/>
+    <script type="text/javascript">
+      $("#menu .active").parents("li").addClass("open");
+    </script>
+  </th:block>
+</div>

@@ -1,0 +1,145 @@
+<th:block th:insert="app::main(_, _)" th:with="title=#{action.search}, panel=false">
+    <content>
+        <th:block th:insert="fragments/component::searchPanel('/search', ${query})" th:with="clearBtn=false" />
+
+        <div class="row">
+            <br>
+            <div class="col-md-6 pr-none">
+                <!-- News -->
+                <div class="widget mb-md" th:if="${news.numberOfElements > 0}">
+                    <div class="widget-header bordered-bottom bordered-red">
+                        <h2 class="widget-caption">[[ #{label.news} ]]</h2>
+                        <div class="widget-buttons">
+                            <a th:href="@{/news?q=__${query}__}" class="btn btn-default btn-xs">
+                                [[ #{action.viewall} ]] >
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row search-item" th:each="item : ${news}">
+                            <div class="col-sm-3 cover">
+                                <div class="thumbnail">
+                                    <img th:src="@{${item.coverUrl}}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-9 content pl-none">
+                                <h4 class="mt-xs ellipsis">
+                                    <a th:href="@{/news/__${item.id}__}">[[ ${item.title} ]]</a>
+                                </h4>
+                                <hr class="mt-none mb-xs" />
+                                <p>[[ ${item.shortContent} ]]</p>
+                            </div>
+
+                            <div class="meta text-right">
+                                <span class="text-muted ml-md">
+                                    [[ #{label.article.author} ]]: [[ ${item.account?.email} ]]
+                                </span>
+                                <span class="text-muted ml-md">
+                                  [[ #{label.article.created} ]]: [[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Service -->
+                <div class="widget mb-md" th:if="${dataFlow.numberOfElements > 0}">
+                    <div class="widget-header bordered-bottom bordered-success">
+                        <h2 class="widget-caption">[[ #{label.stats} ]]</h2>
+                        <div class="widget-buttons">
+                            <a th:href="@{/stats?q=__${query}__}" class="btn btn-default btn-xs">
+                                [[ #{action.viewall} ]] >
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="search-item" th:each="item : ${dataFlow}">
+                            <div class="content pl-none">
+                                <h4 class="mt-xs ellipsis">
+                                    <a th:href="@{/stats/__${item.id}__}">[[ ${item.title} ]]</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Publication -->
+                <div class="widget mb-md" th:if="${publication.numberOfElements > 0}">
+                    <div class="widget-header bordered-bottom bordered-primary">
+                        <h2 class="widget-caption">[[ #{label.publication} ]]</h2>
+                        <div class="widget-buttons">
+                            <a th:href="@{/publication?q=__${query}__}" class="btn btn-default btn-xs">
+                                [[ #{action.viewall} ]] >
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row search-item" th:each="item : ${publication}">
+                            <div class="col-sm-3 cover">
+                                <div class="thumbnail">
+                                    <img th:src="@{${item.coverUrl}}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-9 content pl-none">
+                                <h4 class="mt-xs ellipsis">
+                                    <a th:href="@{/publication/__${item.id}__}">[[ ${item.title} ]]</a>
+                                </h4>
+                                <hr class="mt-none mb-xs" />
+                                <p>[[ ${item.shortDescription} ]]</p>
+                            </div>
+
+                            <div class="meta text-right">
+                                <span class="text-muted ml-md">
+                                    [[ #{label.article.author} ]]: [[ ${item.account?.email} ]]
+                                </span>
+                                <span class="text-muted ml-md">
+                                  [[ #{label.article.created} ]]: [[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style type="text/css">
+            .search-item {
+                position: relative;
+                border-bottom: solid 1px #ccc;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+            .search-item:last-child {
+                border: none;
+                padding-bottom: 0px;
+                margin-bottom: 0px;
+            }
+            .cover .thumbnail {
+                height: 100px;
+                overflow: hidden;
+                margin: 0px;
+            }
+            .content {
+                padding: 5px 10px;
+            }
+            .content a {
+                font-weight: 400;
+            }
+            .content p {
+                word-break: break-word;
+                margin-bottom: 20px;
+                font-size: 13px;
+                font-weight: 100;
+            }
+            .meta {
+                position: absolute;
+                right: 20px;
+                bottom: 10px;
+                width: 100%;
+                font-size: 11px;
+                font-weight: 100;
+            }
+        </style>
+    </content>
+</th:block>

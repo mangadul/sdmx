@@ -1,0 +1,29 @@
+<div class="prop-grid">
+  <div class="row">
+    <div id="zoomButtons" class="col-sm-6">
+      <div style="display:inline-block;font-size:12px">Zoom</div>
+      <button class="monthButton" id="1M" value="1M">1M</button>
+      <button class="monthButton" id="3M" value="3M">3M</button>
+      <button class="monthButton" id="6M" value="6M">6M</button>
+      <button class="monthButton" id="YTD" value="YTD">YTD</button>
+      <button class="monthButton button-hit" id="1Y" value="1Y">1Y</button>
+      <button class="monthButton" id="All" value="All">All</button>
+    </div>
+
+    <div class="col-sm-6 text-right">
+      <div class="move pull-right mr-xs">
+        <input type="text" id="datepick2" style="width: 90px; height: 20px" />
+      </div>
+      <div class="move pull-right mr-xs">To</div>
+      <div class="move pull-right mr-xs">
+        <input type="text" id="datepick"  style="width: 90px; height: 20px" />
+      </div>
+      <div class="move pull-right mr-xs">From</div>
+    </div>
+  </div>
+</div>
+
+<div id="container"></div>
+<div id="scrollcontent"></div>
+
+<script type="text/javascript" th:src="@{/resources/js/stats/chart.js}"></script>

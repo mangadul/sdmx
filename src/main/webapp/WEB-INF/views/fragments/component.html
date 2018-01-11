@@ -1,0 +1,63 @@
+<!-- Modal -->
+<div th:fragment="modal(body, footer)" class="modal fade" th:id="${id}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type='button' aria-label="Close" data-dismiss="modal" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">[[ ${title} ]]</h4>
+            </div>
+            
+            <div th:include="${body} ? ${body} : _" class="modal-body"></div>
+            <th:block th:replace="${footer} ? ${footer} : _"></th:block>
+        </div>
+    </div>
+</div>
+
+<!-- Alert -->
+<div th:fragment="alert(type, message)" class="alert alert-dismissable" th:classappend="'alert-' + ${#strings.toLowerCase(type)}">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <span>[[ ${message} ]]</span>
+</div>
+
+<!-- Pagination -->
+<ul th:fragment="pagination(page)" class="pagination" th:if="${page.maxPage > 1}">
+    <li th:if="${page.prevPage > 0}">
+        <a th:href="@{?page=__${page.prevPage}____${httpQuery!='' ? '&'+httpQuery : ''}__}">
+            <span>&laquo;</span>
+        </a>
+    </li>
+
+    <li th:each="i : ${#numbers.sequence(1, page.maxPage)}"
+      th:class="${page.currentPage==i ? 'active' : '' }">
+        <a th:href="@{?page=__${i}____${httpQuery!='' ? '&'+httpQuery : ''}__}">[[ ${i} ]]</a>
+    </li>
+
+    <li th:if="${page.nextPage > 0}">
+        <a th:href="@{?page=__${page.nextPage}____${httpQuery!='' ? '&'+httpQuery : ''}__}">
+            <span>&raquo;</span>
+        </a>
+    </li>
+</ul>
+
+<div th:fragment="searchPanel(url, query)" class="panel panel-default m-none">
+    <div class="panel-body">
+        <form method="get" th:action="@{${url}}">
+            <div class="input-group">
+                <input th:if="${category != null && category != ''}" type="hidden" name="cat" th:value="${category}">
+                <input type="text" name="q" class="form-control" th:placeholder="#{action.search}" th:value="${query}">
+
+                <div class="input-group-btn">
+                    <a th:if="${clearBtn != false and query != null and query != ''}"
+                      th:href="@{${url}}" class="btn btn-default">
+                        <i class="fa fa-remove"></i>
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-search"></i> [[ #{action.search} ]]
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

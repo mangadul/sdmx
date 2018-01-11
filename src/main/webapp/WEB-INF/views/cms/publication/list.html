@@ -1,0 +1,42 @@
+<th:block th:insert="app::main(~{::link}, _)" th:with="title=#{label.publication}, panel=false">
+  <content>
+    <th:block th:insert="fragments/component::searchPanel('/publication', ${query})" />
+
+    <div class="row">
+      <br>
+      <div th:each="item : ${data}" class="col-md-4">
+        <div class="widget radius-bordered">
+          <a th:href="@{'/publication/' + ${item.id}}">
+            <div class="widget-header">
+              <span class="widget-caption text-md">
+                <b>[[ ${item.title} ]]</b>
+              </span>
+            </div>
+          </a>
+          <div class="widget-body" th:inline="text">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="thumbnail">
+                  <img th:src="@{${item.coverUrl}}" />
+                </div>
+              </div>
+              <div class="col-xs-6 pl-none synopsis">
+                <div th:text="${item.shortDescription}"></div>
+              </div>
+            </div>
+
+            <div class="widget-footer text-sm text-right">
+              <span class="text-muted mr-md">[[ #{label.article.author} ]]: Admin</span>
+              <span class="text-muted mr-md">
+                [[ #{label.article.created} ]]: [[ ${#dates.format(item.created, 'dd MMM yyyy')} ]]
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" th:insert="fragments/component::pagination(${page})"></div>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/article.css}" />
+  </content>
+</th:block>

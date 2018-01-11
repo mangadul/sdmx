@@ -1,0 +1,14 @@
+<div th:replace="layout">
+<th:block th:fragment="app-content">
+    <div class="jumbotron text-center bg-none mt-xlg">
+        <h1 th:if="${status_code}" style="font-size: 150px">[[ ${status_code} ]]</h1>
+        <h2>[[ ${message} ]]</h2>
+
+        <br> <hr>
+
+        <a th:href="@{/}" class="btn btn-lg btn-danger">
+            <i class="fa fa-home"></i> Home
+        </a>
+    </div>
+</th:block>
+</div>

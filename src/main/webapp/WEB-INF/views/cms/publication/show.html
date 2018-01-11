@@ -1,0 +1,45 @@
+<th:block th:insert="app::main(_, _)" th:with="title=${model.title}, header=false">
+  <div th:fragment="content" class="pr-sm pl-sm">
+    <h1 class="mt-none">[[ ${model.title} ]]</h1>
+    <hr class="row mt-sm mb-xs">
+
+    <div class="row text-sm mb-md">
+      <div class="col-xs-6">
+        <span class="text-muted">Author: [[ ${model.account?.name} ]]</span>
+      </div>
+      <div class="col-xs-6 text-right">
+        <span class="text-muted pr-md">Created: [[ ${#dates.format(model.created, 'dd MMM yyyy')} ]]</span>
+        <span class="text-muted pr-md">Updated: [[ ${#dates.format(model.updated, 'dd MMM yyyy')} ]]</span>
+      </div>
+    </div>
+
+    <div class="row mt-lg mb-md text-md">
+      <div class="pull-right col-md-4 col-sm-4">
+        <div class="thumbnail" th:if="${model.isCoverExists()}">
+          <img th:src="@{${model.getCoverUrl()}}" />
+        </div>
+      </div>
+
+      <div class="text-md col-md-8 col-sm-8">
+        <th:block th:utext="${model.description}" /><hr>
+
+        <div>
+          <th:block th:each="fileUrl, i : ${files}">
+            <a th:attr="modal-lg='#modal-publication'+${i.index}" class="thumbnail cursor-pointer">
+              <i class="fa fa-file-pdf-o text-danger"></i>
+              [[ ${#strings.substringAfter(fileUrl, 'publication/'+model.id+'/')} ]]
+            </a>
+
+            <th:block th:insert="fragments/component::modal(~{::.preview}, _)" th:with="id='modal-publication'+${i.index}">
+              <div class="preview">
+                <object th:data="@{${fileUrl}}" type="application/pdf" width="100%" height="500px">
+                  <embed th:src="@{${fileUrl}}" type="application/pdf" />
+                </object>
+              </div>
+            </th:block>
+          </th:block>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>

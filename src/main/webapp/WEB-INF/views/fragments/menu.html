@@ -1,0 +1,19 @@
+<ul th:fragment="container(list)" id="menu" class="nav sidebar-menu">
+    <th:block th:each="item : ${list}">
+        <li th:replace="::menu-item(${item})"> </li>
+    </th:block>
+</ul>
+
+<li th:fragment="menu-item(item)" th:object="${item}" class="menu-icon" 
+    th:classappend="${item.equals(menu.current)} ? 'active'">
+    <a th:classappend="${item.hasChildren()} ? 'menu-dropdown'"
+      th:href="@{__${menuPrefixUrl!=null ? menuPrefixUrl : ''}____*{url}__}">
+        <i th:if="${item.hasAttr('icon')}" class="menu-icon" th:classappend="${item.getAttr('icon')}"></i>
+        <span class="menu-text">[[ *{label} ]]</span>
+        <i th:if="${item.hasChildren()}" class="fa fa-chevron-right menu-expand"></i>
+    </a>
+
+    <th:block th:if="${item.hasChildren()}">
+        <ul class="submenu" th:include="::container(${item.children})"></ul>
+    </th:block>
+</li>

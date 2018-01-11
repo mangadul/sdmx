@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>[[ ${title} ]]</title>
+
+    <meta name="description" content="Error Page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/app.css}" />
+</head>
+<body class="body-500">
+    <div class="error-header"> </div>
+
+    <div class="container ">
+        <section class="error-container text-center">
+            <h1>[[ ${status_code} ]]</h1>
+
+            <div class="error-divider">
+                <h2>[[ ${title} ]]</h2>
+                <p th:if="${message}!=null and !${title.equals(message)}"
+                   class="description"
+                   style="font-size: 20px; word-wrap: break-word; padding: 0px 50px;">
+                    [[ ${message} ]]
+                </p>
+            </div>
+
+            <a th:href="@{${#request.getHeader('Referer')}}" class="return-btn">
+                <i class="fa fa-reply"></i> Back
+            </a>
+            <a th:href="@{/}" class="return-btn">
+                <i class="fa fa-home"></i> Home
+            </a>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>[[${title} ? ${title} : #{app.name}]]</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="csrf-token" th:content="${_csrf.token}" />
+
+    <link rel="shortcut icon" th:href="@{/resources/img/favicon.ico}" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/lib/syncfusion/ej.web.all.min.css}" />
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/resources/css/lib/syncfusion/default.css}" />-->
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/app.css}" />
+    <style type="text/css">
+        .navbar-menu, .navbar-lang {
+            float: left;
+            padding: 0px;
+        }
+        .navbar-menu li {
+            float: left;
+        }
+        .navbar-menu li a {
+            color: #fff;
+            font-size: 15px;
+            padding: 12px 15px;
+            display: inline-block;
+        }
+        .navbar-menu li a:hover {
+            background: #024380;
+        }
+        .navbar-lang a {
+            font-size: 12px;
+            padding: 14px 10px;
+            display: inline-block;
+            font-weight: bold;
+            color: #ccc;
+        }
+        .alert {
+            margin-bottom: 1px !important;
+        }
+        .sidebar-collapse, .collapse-icon {
+            color: #00539f !important;
+            box-shadow: none !important;
+        }
+        .row [class^="col-md-"]:first-child {
+            padding: 0px;
+        }
+    </style>
+    <th:block th:replace="~{::styles} ? ~{::styles} : _"></th:block>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <!-- Navbar Brand -->
+            <div class="navbar-header" style="width: 225px; background: #fff;">
+                <div th:if="${menu != null}" class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="collapse-icon fa fa-bars"></i>
+                </div>
+                <a th:href="@{/}" class="navbar-brand" style="width: 100%">
+                    <img th:src="@{/resources/img/logo.png}" th:alt="#{app.name}" style="margin: 6px 25px; max-width: 70%" />
+                </a>
+            </div>
+
+            <!-- Navbar Menu -->
+            <ul class="navbar-menu">
+                <li> <a th:href="@{/news}"> [[ #{label.news} ]] </a> </li>
+                <li> <a th:href="@{/publication}"> [[ #{label.publication} ]] </a> </li>
+                <li> <a th:href="@{/stats}"> [[ #{label.stats} ]] </a> </li>
+            </ul>
+
+            <!-- Navbar Account -->
+            <div class="navbar-header pull-right">
+                <div th:if="${#authorization.expression('isAuthenticated()')}" class="navbar-account pull-left">
+                    <ul class="account-area">
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" title="View your public profile">
+                                    <img th:src="@{/resources/img/user-default.jpg}" class="img-circle" />
+                                </div>
+
+                                <section>
+                                    <h2> <span class="profile" th:text="${loggedAccount.name}"></span> </h2>
+                                </section>
+                            </a>
+
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <a th:href="@{/admin}">
+                                        <i class="fa fa-user-circle-o"></i> Administration
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/settings}">
+                                        <i class="fa fa-cogs"></i> Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/logout}" method="post">
+                                        <i class="fa fa-power-off"></i> Sign out
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <ul th:if="${#authorization.expression('!isAuthenticated()')}" class="navbar-menu">
+                    <li> <a th:href="@{/signup}"> Register </a> </li>
+                    <li> <a th:href="@{/signin}"> Login </a> </li>
+                    <li> <a th:href="@{/autho}"> Help </a> </li>
+                </ul>
+
+                <div class="navbar-lang">
+                    <a th:href="@{/lang/en}"> EN </a> |
+                    <a th:href="@{/lang/id}"> ID </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <div th:replace="::app-content"> </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <th:block th:insert="fragments/component::modal(_, _)" th:with="id='modal-basic'" />
+    <th:block th:insert="fragments/component::modal(_, _)" th:with="id='modal-error'" />
+    <th:block th:insert="fragments/component::modal(_, ~{::.modal-footer})" th:with="id='modal-confirm'">
+        <div class="modal-footer">
+            <button type='button' data-dismiss='modal' class='btn btn-primary modal-accept'>
+                [[ #{action.yes} ]]
+            </button>
+            <button type='button' data-dismiss='modal' class='btn btn-default modal-close'>
+                [[ #{action.no} ]]
+            </button>
+        </div>
+    </th:block>
+
+    <script type="text/javascript" th:src="@{/resources/js/app.js}"> </script>
+    <script type="text/javascript">
+        fn.url.base = "[[ @{/} ]]";
+    </script>
+
+    <th:block th:replace="~{::scripts} ? ~{::scripts} : _"></th:block>
+</body>
+</html>
